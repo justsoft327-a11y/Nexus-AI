@@ -3,405 +3,444 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Vault</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Nexus Magic AI</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(180deg, #070b19 0%, #000000 100%);
+            color: #f5f5f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+            transition: background 1s ease;
+        }
+
+        /* 8. Full Screen Blush Override */
+        body.app-blushing {
+            background: linear-gradient(180deg, #2b0c16 0%, #0a0205 100%) !important;
+        }
+
+        /* Container Frame with Shifting Hourly Border Rings */
+        .chat-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            border: 2px solid transparent;
+            transition: all 0.5s ease;
+        }
+
+        /* 2. Hourly Shifting Search Ring Style 1 (Rainbow) */
+        .border-rainbow {
+            border-image: linear-gradient(45deg, #00f0ff, #7f00ff, #ff007f, #00f0ff) 1;
+            animation: rainbowCycle 8s linear infinite;
+        }
+        @keyframes rainbowCycle {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+
+        /* 2. Hourly Shifting Search Ring Style 2 (Soft Ripple) */
+        .border-ripple {
+            border-color: rgba(0, 122, 255, 0.25);
+            box-shadow: inset 0 0 20px rgba(0, 122, 255, 0.1);
+        }
+
+        /* 8. Blush Mode Locked Golden-Pink Pulse Ring */
+        .border-blush-lock {
+            border-image: linear-gradient(45deg, #ff007f, #ffb3d9, #ffcc00, #ff007f) 1 !important;
+            animation: blushPulse 2s ease-in-out infinite alternate !important;
+        }
+        @keyframes blushPulse {
+            0% { box-shadow: inset 0 0 15px rgba(255, 0, 127, 0.3); filter: brightness(1); }
+            100% { box-shadow: inset 0 0 35px rgba(255, 0, 127, 0.7); filter: brightness(1.3); }
+        }
+
+        /* Center Magic Spark Star Setup */
+        .center-stage {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            transition: opacity 0.5s ease;
+        }
+        .magic-star {
+            width: 70px;
+            height: 70px;
+            margin-bottom: 25px;
+            background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(0,240,255,1) 40%, rgba(127,0,255,0) 70%);
+            clip-path: polygon(50% 0%, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0% 50%, 39% 39%);
+            animation: floatStar 3s ease-in-out infinite;
+        }
+        @keyframes floatStar {
+            0%, 100% { transform: translateY(0) scale(1); filter: drop-shadow(0 0 8px #00f0ff); }
+            50% { transform: translateY(-10px) scale(1.05); filter: drop-shadow(0 0 18px #7f00ff); }
+        }
+                /* 1. Real-Time Hype Greeting Typography */
+        .greeting-header {
+            font-size: 2rem;
+            font-weight: 600;
+            background: linear-gradient(180deg, #ffffff 0%, #a1a1a6 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        /* Message Scroll View Streams */
+        .chat-view {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: none; 
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* 6. Two-Second Ambient Ignition Glow Screen Overlay */
+        .ignition-glow {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, rgba(0,122,255,0.25) 0%, rgba(0,0,0,0) 70%);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 5;
+        }
+        .ignition-glow.active {
+            opacity: 1;
+            animation: pulseIgnition 1s ease-in-out infinite alternate;
+        }
+        @keyframes pulseIgnition {
+            0% { background: radial-gradient(circle, rgba(0,122,255,0.25) 0%, rgba(0,0,0,0) 70%); }
+            100% { background: radial-gradient(circle, rgba(127,0,255,0.4) 0%, rgba(0,0,0,0) 80%); }
+        }
+
+        /* Message Bubble Structural Configurations */
+        .message {
+            max-width: 78%;
+            padding: 14px 18px;
+            border-radius: 20px;
+            font-size: 1rem;
+            line-height: 1.45;
+            word-wrap: break-word;
+            opacity: 0;
+            transform: translateY(12px);
+            animation: bubbleUp 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+        @keyframes bubbleUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .user-message {
+            background-color: #007aff;
+            color: #ffffff;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+        .ai-message {
+            background-color: #1c1c1e;
+            color: #f5f5f7;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+            border: 1px solid #2c2c2e;
+        }
+
+        /* Floating Pill-Shaped Text Message Dock Frame */
+        .input-dock {
+            padding: 20px;
+            background: transparent;
+        }
+        .pill-container {
+            display: flex;
+            align-items: center;
+            background-color: #151517;
+            border-radius: 28px;
+            padding: 8px 14px;
+            border: 1.5px solid #222224;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* 3. Turn-Taking Box Shifting Focus Glows */
+        .glow-electric-blue {
+            border-color: #007aff !important;
+            box-shadow: 0 0 16px rgba(0, 122, 255, 0.45);
+        }
+        .glow-rainbow {
+            border-image: linear-gradient(45deg, #00f0ff, #7f00ff, #ff007f) 1 !important;
+            box-shadow: 0 0 16px rgba(127, 0, 255, 0.35);
+        }
+
+        textarea {
+            flex: 1;
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 1rem;
+            resize: none;
+            height: 24px;
+            outline: none;
+            font-family: inherit;
+            padding-top: 2px;
+        }
+        textarea::placeholder {
+            color: #555559;
+        }
+
+        /* 5. Mechanical Launch Circular Button Assets */
+        .send-pill-btn {
+            background-color: #222224;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .send-pill-btn svg {
+            fill: #555559;
+            transition: fill 0.3s ease;
+        }
+
+        /* 4. Activated Turning Shifting Button Colors */
+        .btn-blue-active {
+            background-color: #ffffff !important;
+        }
+        .btn-blue-active svg {
+            fill: #007aff !important;
+        }
+        .btn-rainbow-active {
+            background: linear-gradient(45deg, #00f0ff, #7f00ff) !important;
+        }
+        .btn-rainbow-active svg {
+            fill: #ffffff !important;
+        }
+
+        /* 5. Launch Button Spin Trigger */
+        @keyframes launchSpin {
+            0% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(0.75) rotate(-30deg); }
+            100% { transform: scale(1) rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
 
-    <!-- TOP APP HEADER -->
-    <header class="app-header">
-        <h1 class="logo">crypto vault</h1>
-        <div class="header-icons">
-            <span id="eye-icon" onclick="handleEyeTap()">👁️</span>
-            <span onclick="openSearchTab()">🔍</span>
-            <span onclick="openNotificationsTab()">🔔</span>
-            <div class="avatar-badge" onclick="openSettingsMenu()">👤</div>
-        </div>
-    </header>
+<div class="ignition-glow" id="ambient-glow-layer"></div>
 
-    <!-- VIEWS CONTAINER -->
-
-    <!-- 1. HOME VIEW -->
-    <div id="view-home" class="view-section active">
-        <div class="balance-container">
-            <div class="balance-title">Total Cash Balance</div>
-            <div id="total-balance" class="balance-amount">$0.00</div>
-        </div>
-
-        <div class="action-grid">
-            <div class="action-btn-item" onclick="openDepositModal()">
-                <div class="action-circle">↓</div>
-                <span class="action-label">Deposit</span>
-            </div>
-            <div class="action-btn-item" onclick="openWithdrawModal()">
-                <div class="action-circle">↑</div>
-                <span class="action-label">Withdraw</span>
-            </div>
-            <div class="action-btn-item" onclick="openConvertModal()">
-                <div class="action-circle">⇄</div>
-                <span class="action-label">Convert</span>
-            </div>
-        </div>
-
-        <div class="card-box">
-            <div class="asset-left">
-                <div class="asset-icon bg-usd">USD</div>
-                <div>
-                    <h4>USD</h4>
-                    <p style="font-size:12px; color:#9ca3af;">United States Dollar</p>
-                </div>
-            </div>
-            <span>$0.00 USD</span>
-        </div>
-
-        <div class="promo-banner">
-            <div>
-                <h4>Need instant cash?</h4>
-                <p>Use your BTC or USDT as collateral and get cash instantly.</p>
-            </div>
-            <button class="btn-explore" onclick="alert('Instant Loan Feature Opened')">Explore</button>
-        </div>
-
-        <div class="section-header">
-            <h3>Transaction History</h3>
-            <span style="font-size:12px; color:#22c55e; cursor:pointer;" onclick="openAllTransactions()">View all</span>
-        </div>
-        <div class="tx-item" onclick="viewTxDetail('Deposit USD', '+$150.00', 'Aug 18, 2026')">
-            <div class="tx-info">
-                <h5>Deposit USD</h5>
-                <span>Aug 18, 2026 • Bank Transfer</span>
-            </div>
-            <span style="color:#22c55e; font-weight:bold;">+$150.00</span>
-        </div>
+<div class="chat-container border-rainbow" id="app-frame">
+    <div class="center-stage" id="start-screen">
+        <div class="magic-star"></div>
+        <div class="greeting-header" id="dynamic-greeting">What's next, Just soft?</div>
     </div>
-
-    <!-- 2. CRYPTO VIEW -->
-    <div id="view-crypto" class="view-section">
-        <div class="balance-container">
-            <div class="balance-title">Total Crypto Balance</div>
-            <div class="balance-amount">$0.00</div>
-        </div>
-
-        <div class="action-grid">
-            <div class="action-btn-item" onclick="openCryptoTrade()">
-                <div class="action-circle">📈</div>
-                <span class="action-label">Trade</span>
-            </div>
-            <div class="action-btn-item" onclick="openCryptoReceive()">
-                <div class="action-circle">↓</div>
-                <span class="action-label">Receive</span>
-            </div>
-            <div class="action-btn-item" onclick="openCryptoSend()">
-                <div class="action-circle">↑</div>
-                <span class="action-label">Send</span>
-            </div>
-        </div>
-
-        <div class="card-box" onclick="openAssetDetail('BTC')">
-            <div class="asset-left">
-                <div class="asset-icon bg-btc">₿</div>
-                <div>
-                    <h4>BTC</h4>
-                    <p style="font-size:12px; color:#9ca3af;">Bitcoin</p>
-                </div>
-            </div>
-            <div style="text-align: right;">
-                <h4>0 BTC</h4>
-                <span style="font-size:12px; color:#9ca3af;">$0.00 USD</span>
-            </div>
-        </div>
-
-        <div class="card-box" onclick="openAssetDetail('USDT')">
-            <div class="asset-left">
-                <div class="asset-icon bg-usdt">₮</div>
-                <div>
-                    <h4>USDT</h4>
-                    <p style="font-size:12px; color:#9ca3af;">Tether</p>
-                </div>
-            </div>
-            <div style="text-align: right;">
-                <h4>0 USDT</h4>
-                <span style="font-size:12px; color:#9ca3af;">$0.00 USD</span>
-            </div>
-        </div>
-
-        <div class="promo-banner">
-            <div>
-                <h4>Start auto buy</h4>
-                <p>Grow your portfolio on a recurring schedule.</p>
-            </div>
-            <button class="btn-explore" onclick="alert('Auto Buy Config')">Explore</button>
-        </div>
-
-        <div class="section-header">
-            <h3>Transactions</h3>
-        </div>
-        <div class="tx-item" onclick="viewTxDetail('Sold BTC', '-0.00309889 BTC', 'Aug 17, 2026')">
-            <div class="tx-info">
-                <h5>Sold BTC</h5>
-                <span>Aug 17, 2026</span>
-            </div>
-            <span class="tx-amount negative">-0.00309889 BTC</span>
-        </div>
-    </div>
-
-    <!-- 3. PAY BILL VIEW -->
-    <div id="view-paybill" class="view-section">
-        <h3 style="margin-bottom: 16px;">Quick payments</h3>
-        <div class="quick-pay-grid">
-            <div class="quick-pay-card" onclick="openBillMenu('att')">
-                <span style="font-size:24px;">📞</span>
-                <span>AT&T</span>
-            </div>
-            <div class="quick-pay-card" onclick="openBillMenu('Data')">
-                <span style="font-size:24px;">📶</span>
-                <span>Data</span>
-            </div>
-            <div class="quick-pay-card" onclick="openBillMenu('Betting')">
-                <span style="font-size:24px;">⚽</span>
-                <span>Betting</span>
-            </div>
-            <div class="quick-pay-card" onclick="openBillMenu('Electricity')">
-                <span style="font-size:24px;">⚡</span>
-                <span>Electricity</span>
-            </div>
-            <div class="quick-pay-card" onclick="openBillMenu('Cable TV')">
-                <span style="font-size:24px;">📺</span>
-                <span>Cable TV</span>
-            </div>
-            <div class="quick-pay-card" onclick="openBillMenu('Vouchers')">
-                <span style="font-size:24px;">🎟️</span>
-                <span>Vouchers</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- 4. CARDS VIEW -->
-    <div id="view-cards" class="view-section">
-        <div class="virtual-card-preview">
-            <div style="display:flex; justify-content:space-between; font-weight:bold;">
-                <span>crypto vault</span>
-                <span>Virtual</span>
-            </div>
-            <div>
-                <p style="font-size: 18px; letter-spacing: 2px;">•••• •••• •••• 8821</p>
-            </div>
-        </div>
-
-        <h3 style="margin-bottom:8px;">Spend anywhere in any currency</h3>
-        <p style="font-size:12px; color:#9ca3af; margin-bottom:16px;">Create cards and start spending on Claude, Netflix, Shein, Amazon, Zara and others.</p>
-
-        <div class="card-box">
-            <div class="asset-left">
-                <span>📁</span>
-                <div>
-                    <h4>Document Upload</h4>
-                    <p style="font-size:11px; color:#9ca3af;">You need to upload your Passport</p>
-                </div>
-            </div>
-            <span style="color:#f59e0b; font-size:12px; font-weight:bold;">Pending</span>
-        </div>
-
-        <div class="card-box" style="margin-bottom:24px;">
-            <div class="asset-left">
-                <span>📋</span>
-                <div>
-                    <h4>Information Required</h4>
-                    <p style="font-size:11px; color:#9ca3af;">Employment status & source of funds</p>
-                </div>
-            </div>
-            <span style="color:#f59e0b; font-size:12px; font-weight:bold;">Pending</span>
-        </div>
-
-        <button class="btn-primary" onclick="openCardsUploadModal()">Continue</button>
-    </div>
-
-    <!-- BOTTOM NAVIGATION -->
-    <nav class="bottom-nav">
-        <div class="nav-item active" onclick="switchTab('home', this)">
-            <span>🏠</span>
-            <span>Home</span>
-        </div>
-        <div class="nav-item" onclick="switchTab('crypto', this)">
-            <span>🪙</span>
-            <span>Crypto</span>
-        </div>
-        <div class="nav-item" onclick="switchTab('paybill', this)">
-            <span>🏷️</span>
-            <span>Pay Bill</span>
-        </div>
-        <div class="nav-item" onclick="switchTab('cards', this)">
-            <span>💳</span>
-            <span>Cards</span>
-        </div>
-    </nav>
-
-    <!-- MODALS & OVERLAYS -->
-    <div id="settings-modal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Settings</h2>
-                <button class="close-btn" onclick="closeSettingsModal()">&times;</button>
-            </div>
-            <div class="settings-item" onclick="openSubSettings('account')">
-                <span>Account</span>
-                <small>Personal details, invite friends, account limits, statements, delete account</small>
-            </div>
-            <div class="settings-item" onclick="openSubSettings('recipients')">
-                <span>Recipients</span>
-                <small>Bank accounts, Mobile money</small>
-            </div>
-            <div class="settings-item" onclick="openSubSettings('connected-banks')">
-                <span>Connected bank accounts</span>
-                <small>Manage your payment accounts</small>
-            </div>
-            <div class="settings-item" onclick="openSubSettings('security')">
-                <span>Security</span>
-                <small>2FA, app lock, passcode, biometrics, instant withdrawal</small>
-            </div>
-            <div class="settings-item" onclick="openSubSettings('preferences')">
-                <span>Preferences</span>
-                <small>Notifications, display currency & app themes</small>
-            </div>
-            <div class="settings-item" onclick="openSubSettings('about')">
-                <span>About us</span>
-                <small>FAQs, privacy policy, our blog, contact us</small>
-            </div>
-            <div class="settings-item text-danger" onclick="alert('Logged out successfully')">
-                <span>Log out</span>
-            </div>
-        </div>
-    </div>
-
-    <div id="sub-settings-modal" class="modal-overlay">
-        <div class="modal-content" id="sub-settings-body"></div>
-    </div>
-
-    <div id="cards-upload-modal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Card Verification</h3>
-                <button class="close-btn" onclick="closeCardsUploadModal()">&times;</button>
-            </div>
-            <div class="form-group">
-                <label>Upload Passport Document:</label>
-                <input type="file" id="passport-doc">
-            </div>
-            <div class="form-group">
-                <label>Employment Status:</label>
-                <input type="text" id="emp-status" placeholder="e.g. Employed">
-            </div>
-            <div class="form-group">
-                <label>Source of Funds:</label>
-                <input type="text" id="source-funds" placeholder="e.g. Salary / Business">
-            </div>
-            <button class="btn-primary" onclick="submitCardVerification()">Submit Documents</button>
-        </div>
-    </div>
-
-    <div id="deposit-modal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Deposit Funds</h3>
-                <button class="close-btn" onclick="closeDepositModal()">&times;</button>
-            </div>
-            <h4>Saved Bank Accounts</h4>
-            <div class="card-box" style="margin: 10px 0;">
-                <span>Chase Bank •••• 4821</span>
-            </div>
-            <button class="btn-secondary" onclick="openAddBankForm()">+ Add Bank Account</button>
-            <button class="btn-secondary" onclick="openAddCardForm()">+ Add Debit Card</button>
-        </div>
-    </div>
-
-    <div id="withdraw-modal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Withdraw Money</h3>
-                <button class="close-btn" onclick="closeWithdrawModal()">&times;</button>
-            </div>
-            <div class="form-group">
-                <label>Bank Name</label>
-                <input type="text" placeholder="e.g. Chase, Bank of America">
-            </div>
-            <div class="form-group">
-                <label>Account Number</label>
-                <input type="text" placeholder="Enter 10-digit account number">
-            </div>
-            <div class="form-group">
-                <label>Amount ($)</label>
-                <input type="number" placeholder="0.00">
-            </div>
-            <button class="btn-primary" onclick="confirmWithdrawal()">Withdraw Funds</button>
-        </div>
-    </div>
-
-    <div id="convert-modal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Convert Currency</h3>
-                <button class="close-btn" onclick="closeConvertModal()">&times;</button>
-            </div>
-            <div class="form-group">
-                <label>From</label>
-                <select><option>USD ($)</option><option>USDT</option></select>
-            </div>
-            <div class="form-group">
-                <label>To</label>
-                <select><option>BTC</option><option>USDT</option></select>
-            </div>
-            <div class="form-group">
-                <label>Amount</label>
-                <input type="number" placeholder="0.00">
-            </div>
-            <button class="btn-primary" onclick="alert('Conversion Successful!')">Convert Now</button>
-        </div>
-    </div>
-
-    <div id="crypto-action-modal" class="modal-overlay">
-        <div class="modal-content" id="crypto-action-body"></div>
-    </div>
-
-    <div id="search-modal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Search</h3>
-                <button class="close-btn" onclick="closeSearchModal()">&times;</button>
-            </div>
-            <input type="text" class="form-group input" placeholder="Search transactions, bills, or assets..." style="width:100%; background:#1a202c; border:1px solid #2d3748; padding:12px; border-radius:10px; color:#fff;">
-        </div>
-    </div>
-
-    <div id="notification-modal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Notifications</h3>
-                <button class="close-btn" onclick="closeNotificationModal()">&times;</button>
-            </div>
-            <div class="tx-item">
-                <div class="tx-info">
-                    <h5>Account Verified</h5>
-                    <span>Your identity documents have been approved.</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="admin-modal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Admin Tweak Panel</h3>
-                <button class="close-btn" onclick="closeAdminModal()">&times;</button>
-            </div>
-            <div class="form-group">
-                <label>Override Balance ($)</label>
-                <input type="number" id="admin-bal-input" placeholder="Enter new balance">
-            </div>
-            <button class="btn-primary" onclick="applyAdminBalance()">Update Balance</button>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
-</body>
-    </html>
     
+    <div class="chat-view" id="message-scroller"></div>
+    
+    <div class="input-dock">
+        <div class="pill-container" id="dock-border-frame">
+            <textarea placeholder="Ask Gemini..." id="input-field"></textarea>
+            <button class="send-pill-btn" id="launch-trigger" disabled>
+                <svg viewBox="0 0 24 24" width="22" height="22">
+                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // SECURE GOOGLE API KEY VARIABLE:
+    const API_KEY = "AIzaSyAQ.Ab8RN6JrD1_whKc7Rz-83MkOVGRabLiLwj0186_x_55Uaix0CA";
+
+    const appFrame = document.getElementById('app-frame');
+    const startScreen = document.getElementById('start-screen');
+    const dynamicGreeting = document.getElementById('dynamic-greeting');
+    const messageScroller = document.getElementById('message-scroller');
+    const inputField = document.getElementById('input-field');
+    const launchTrigger = document.getElementById('launch-trigger');
+    const dockBorderFrame = document.getElementById('dock-border-frame');
+    const ambientGlowLayer = document.getElementById('ambient-glow-layer');
+
+    let turnStateRainbow = false; 
+    let isFirstMessage = true;    
+
+    // --- 1. Real-Time Hype Greeting Clock Sensor ---
+    function updateClockGreeting() {
+        const currentHour = new Date().getHours();
+        let statusPhrase = "What's next, Just soft?";
+        if (currentHour >= 5 && currentHour < 12) {
+            statusPhrase = "Good Morning, User";
+        } else if (currentHour >= 12 && currentHour < 18) {
+            statusPhrase = "Good Afternoon, User";
+        } else {
+            statusPhrase = "Good Evening, User";
+        }
+        dynamicGreeting.textContent = statusPhrase;
+    }
+    updateClockGreeting();
+
+    // --- 2. Hourly Alternating Search Engine Ring ---
+    function updateHourlySearchRing() {
+        const hour = new Date().getHours();
+        if (document.body.classList.contains('app-blushing')) return;
+        if (hour % 2 === 0) {
+            appFrame.classList.remove('border-ripple');
+            appFrame.classList.add('border-rainbow');
+        } else {
+            appFrame.classList.remove('border-rainbow');
+            appFrame.classList.add('border-ripple');
+        }
+    }
+    updateHourlySearchRing();
+    setInterval(updateHourlySearchRing, 60000);
+        // --- 3. Turn-Taking Input Focus & Dynamic Button Sync ---
+    inputField.addEventListener('focus', () => {
+        if (document.body.classList.contains('app-blushing')) return;
+        if (turnStateRainbow) {
+            dockBorderFrame.classList.add('glow-rainbow');
+            if (inputField.value.trim() !== "") launchTrigger.classList.add('btn-rainbow-active');
+        } else {
+            dockBorderFrame.classList.add('glow-electric-blue');
+            if (inputField.value.trim() !== "") launchTrigger.classList.add('btn-blue-active');
+        }
+    });
+
+    inputField.addEventListener('blur', () => {
+        dockBorderFrame.classList.remove('glow-electric-blue', 'glow-rainbow');
+        launchTrigger.classList.remove('btn-blue-active', 'btn-rainbow-active');
+        turnStateRainbow = !turnStateRainbow;
+    });
+
+    inputField.addEventListener('input', () => {
+        const cleanText = inputField.value.trim();
+        if (cleanText !== "") {
+            launchTrigger.removeAttribute('disabled');
+            if (dockBorderFrame.classList.contains('glow-rainbow')) {
+                launchTrigger.classList.add('btn-rainbow-active');
+            } else {
+                launchTrigger.classList.add('btn-blue-active');
+            }
+        } else {
+            launchTrigger.setAttribute('disabled', 'true');
+            launchTrigger.classList.remove('btn-blue-active', 'btn-rainbow-active');
+        }
+    });
+
+    function appendMessage(text, sender) {
+        const msgDiv = document.createElement('div');
+        msgDiv.classList.add('message', sender === 'user' ? 'user-message' : 'ai-message');
+        msgDiv.textContent = text;
+        messageScroller.appendChild(msgDiv);
+        messageScroller.scrollTop = messageScroller.scrollHeight;
+    }
+
+    // --- 4. Main Event Execution Handlers ---
+    launchTrigger.onclick = async function() {
+        const msg = inputField.value.trim();
+        if (msg === "") return;
+
+        // Button action launch spin animation
+        launchTrigger.style.animation = 'launchSpin 0.45s ease';
+        setTimeout(() => launchTrigger.style.animation = '', 450);
+
+        // Core 2-Second First Message Ignition Ambient Bloom
+        if (isFirstMessage) {
+            isFirstMessage = false;
+            startScreen.style.opacity = '0';
+            ambientGlowLayer.classList.add('active');
+            
+            // Delays showing content for exactly 2 seconds while glowing
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            
+            startScreen.style.display = 'none';
+            ambientGlowLayer.classList.remove('active');
+            messageScroller.style.display = 'flex';
+        }
+
+        appendMessage(msg, 'user');
+        inputField.value = "";
+        launchTrigger.setAttribute('disabled', 'true');
+        launchTrigger.classList.remove('btn-blue-active', 'btn-rainbow-active');
+
+        // --- Secret "I love you" Blush Switch Engine Trigger ---
+        if (msg.toLowerCase() === "i love you") {
+            document.body.classList.add('app-blushing');
+            appFrame.className = "chat-container border-blush-lock";
+            
+            const secretReply = "Aww, you just woke up my hidden system settings! I love you too! ♥";
+            setTimeout(() => {
+                appendMessage(secretReply, 'ai');
+                showConfettiParticles('❤️'); // Heart burst confetti blast triggers!
+                speakText(secretReply);
+            }, 600);
+            return;
+        }
+
+        // Standard Operation Route: Reach out to Google Gemini engine
+        try {
+            const response = await fetch(`https://googleapis.com{API_KEY}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ contents: [{ parts: [{ text: msg }] }] })
+            });
+            const data = await response.json();
+            if (data.candidates && data.candidates.content.parts.text) {
+                const aiResponse = data.candidates.content.parts.text;
+                appendMessage(aiResponse, 'ai');
+                showConfettiParticles('👍'); // Normal thumbs-up emoji burst drops
+                speakText(aiResponse);
+            } else {
+                appendMessage("Error: Engine response formatting mismatch.", 'ai');
+            }
+        } catch (err) {
+            appendMessage("Failed to reach the AI engine.", 'ai');
+        }
+    };
+
+    // --- 5. Interactive Particle Burst Engine ---
+    function showConfettiParticles(emojiType) {
+        for (let i = 0; i < 18; i++) {
+            setTimeout(() => {
+                const particle = document.createElement('div');
+                particle.style.position = 'fixed';
+                particle.style.bottom = '40px';
+                particle.style.left = Math.random() * 75 + 12 + '%';
+                particle.style.fontSize = '30px';
+                particle.style.transition = 'all 2.2s cubic-bezier(0.1, 0.8, 0.25, 1)';
+                particle.style.zIndex = '99999';
+                particle.style.pointerEvents = 'none';
+                particle.innerText = emojiType;
+                
+                document.body.appendChild(particle);
+                setTimeout(() => {
+                    particle.style.transform = `translateY(-280px) scale(${Math.random() * 0.7 + 1.2})`;
+                    particle.style.opacity = '0';
+                }, 50);
+                setTimeout(() => particle.remove(), 2300);
+            }, i * 85);
+        }
+    }
+
+    function speakText(text) {
+        window.speechSynthesis.cancel();
+        const speech = new SpeechSynthesisUtterance(text);
+        window.speechSynthesis.speak(speech);
+    }
+</script>
+</body>
+</html>
